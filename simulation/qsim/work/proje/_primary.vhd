@@ -12,6 +12,14 @@ entity proje is
         bf3             : out    vl_logic_vector(17 downto 0);
         bf4             : out    vl_logic_vector(17 downto 0);
         isitstart       : out    vl_logic_vector(1 downto 0);
-        b               : out    vl_logic
+        b               : out    vl_logic;
+        clk25           : out    vl_logic;
+        o_hsync         : out    vl_logic;
+        o_vsync         : out    vl_logic;
+        color           : out    vl_logic_vector(7 downto 0);
+        ind1            : out    vl_logic_vector(4 downto 0);
+        ind2            : out    vl_logic_vector(4 downto 0);
+        ind3            : out    vl_logic_vector(4 downto 0);
+        ind4            : out    vl_logic_vector(4 downto 0)
     );
 end proje;

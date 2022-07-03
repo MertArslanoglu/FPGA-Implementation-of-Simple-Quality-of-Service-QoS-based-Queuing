@@ -1,0 +1,399 @@
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench with test vectors .The test vectors  
+// are exported from a vector file in the Quartus Waveform Editor and apply to  
+// the top level entity of the current Quartus project .The user can use this   
+// testbench to simulate his design using a third-party simulation tool .       
+// *****************************************************************************
+// Generated on "07/03/2022 18:46:28"
+                                                                        
+// Verilog Self-Checking Test Bench (with test vectors) for design :    proje
+// 
+// Simulation tool : 3rd Party
+// 
+
+`timescale 1 ps/ 1 ps
+module proje_vlg_sample_tst(
+	bin0,
+	bin1,
+	clk,
+	start,
+	sampler_tx
+);
+input  bin0;
+input  bin1;
+input  clk;
+input  start;
+output sampler_tx;
+
+reg sample;
+time current_time;
+always @(bin0 or bin1 or clk or start)
+                                                                                
+begin                                                 
+ if ($realtime > 0)                                   
+ begin                                                
+	if ($realtime == 0 || $realtime != current_time)  
+	begin									          
+		if (sample === 1'bx)                          
+			sample = 0;                               
+		else                                          
+			sample = ~sample;                         
+	end										          
+	current_time = $realtime;					      
+ end                                                  
+end                                                   
+
+assign sampler_tx = sample;
+endmodule
+
+module proje_vlg_check_tst (
+	b,
+	bf1,
+	bf2,
+	bf3,
+	bf4,
+	clk25,
+	color,
+	isitstart,
+	o_hsync,
+	o_vsync,
+	registeredbin,
+	sampler_rx
+);
+input  b;
+input [17:0] bf1;
+input [17:0] bf2;
+input [17:0] bf3;
+input [17:0] bf4;
+input  clk25;
+input [7:0] color;
+input [1:0] isitstart;
+input  o_hsync;
+input  o_vsync;
+input [3:0] registeredbin;
+input sampler_rx;
+
+reg  b_expected;
+reg [17:0] bf1_expected;
+reg [17:0] bf2_expected;
+reg [17:0] bf3_expected;
+reg [17:0] bf4_expected;
+reg  clk25_expected;
+reg [7:0] color_expected;
+reg [1:0] isitstart_expected;
+reg  o_hsync_expected;
+reg  o_vsync_expected;
+reg [3:0] registeredbin_expected;
+
+reg  b_prev;
+reg [17:0] bf1_prev;
+reg [17:0] bf2_prev;
+reg [17:0] bf3_prev;
+reg [17:0] bf4_prev;
+reg  clk25_prev;
+reg [7:0] color_prev;
+reg [1:0] isitstart_prev;
+reg  o_hsync_prev;
+reg  o_vsync_prev;
+reg [3:0] registeredbin_prev;
+
+reg [1:0] isitstart_expected_prev;
+reg [3:0] registeredbin_expected_prev;
+
+reg [1:0] last_isitstart_exp;
+reg [3:0] last_registeredbin_exp;
+
+reg trigger;
+
+integer i;
+integer nummismatches;
+
+reg [1:11] on_first_change ;
+
+
+initial
+begin
+trigger = 0;
+i = 0;
+nummismatches = 0;
+on_first_change = 11'b1;
+end
+
+// update real /o prevs
+
+always @(trigger)
+begin
+	b_prev = b;
+	bf1_prev = bf1;
+	bf2_prev = bf2;
+	bf3_prev = bf3;
+	bf4_prev = bf4;
+	clk25_prev = clk25;
+	color_prev = color;
+	isitstart_prev = isitstart;
+	o_hsync_prev = o_hsync;
+	o_vsync_prev = o_vsync;
+	registeredbin_prev = registeredbin;
+end
+
+// update expected /o prevs
+
+always @(trigger)
+begin
+	isitstart_expected_prev = isitstart_expected;
+	registeredbin_expected_prev = registeredbin_expected;
+end
+
+
+// expected isitstart[ 1 ]
+initial
+begin
+	isitstart_expected[1] = 1'bX;
+end 
+// expected isitstart[ 0 ]
+initial
+begin
+	isitstart_expected[0] = 1'bX;
+end 
+// expected registeredbin[ 3 ]
+initial
+begin
+	registeredbin_expected[3] = 1'bX;
+end 
+// expected registeredbin[ 2 ]
+initial
+begin
+	registeredbin_expected[2] = 1'bX;
+end 
+// expected registeredbin[ 1 ]
+initial
+begin
+	registeredbin_expected[1] = 1'bX;
+end 
+// expected registeredbin[ 0 ]
+initial
+begin
+	registeredbin_expected[0] = 1'bX;
+end 
+// generate trigger
+always @(b_expected or b or bf1_expected or bf1 or bf2_expected or bf2 or bf3_expected or bf3 or bf4_expected or bf4 or clk25_expected or clk25 or color_expected or color or isitstart_expected or isitstart or o_hsync_expected or o_hsync or o_vsync_expected or o_vsync or registeredbin_expected or registeredbin)
+begin
+	trigger <= ~trigger;
+end
+
+always @(posedge sampler_rx or negedge sampler_rx)
+begin
+`ifdef debug_tbench
+	$display("Scanning pattern %d @time = %t",i,$realtime );
+	i = i + 1;
+	$display("| expected b = %b | expected bf1 = %b | expected bf2 = %b | expected bf3 = %b | expected bf4 = %b | expected clk25 = %b | expected color = %b | expected isitstart = %b | expected o_hsync = %b | expected o_vsync = %b | expected registeredbin = %b | ",b_expected_prev,bf1_expected_prev,bf2_expected_prev,bf3_expected_prev,bf4_expected_prev,clk25_expected_prev,color_expected_prev,isitstart_expected_prev,o_hsync_expected_prev,o_vsync_expected_prev,registeredbin_expected_prev);
+	$display("| real b = %b | real bf1 = %b | real bf2 = %b | real bf3 = %b | real bf4 = %b | real clk25 = %b | real color = %b | real isitstart = %b | real o_hsync = %b | real o_vsync = %b | real registeredbin = %b | ",b_prev,bf1_prev,bf2_prev,bf3_prev,bf4_prev,clk25_prev,color_prev,isitstart_prev,o_hsync_prev,o_vsync_prev,registeredbin_prev);
+`endif
+	if (
+		( isitstart_expected_prev[0] !== 1'bx ) && ( isitstart_prev[0] !== isitstart_expected_prev[0] )
+		&& ((isitstart_expected_prev[0] !== last_isitstart_exp[0]) ||
+			on_first_change[8])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port isitstart[0] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", isitstart_expected_prev);
+		$display ("     Real value = %b", isitstart_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[8] = 1'b0;
+		last_isitstart_exp[0] = isitstart_expected_prev[0];
+	end
+	if (
+		( isitstart_expected_prev[1] !== 1'bx ) && ( isitstart_prev[1] !== isitstart_expected_prev[1] )
+		&& ((isitstart_expected_prev[1] !== last_isitstart_exp[1]) ||
+			on_first_change[8])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port isitstart[1] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", isitstart_expected_prev);
+		$display ("     Real value = %b", isitstart_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[8] = 1'b0;
+		last_isitstart_exp[1] = isitstart_expected_prev[1];
+	end
+	if (
+		( registeredbin_expected_prev[0] !== 1'bx ) && ( registeredbin_prev[0] !== registeredbin_expected_prev[0] )
+		&& ((registeredbin_expected_prev[0] !== last_registeredbin_exp[0]) ||
+			on_first_change[11])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port registeredbin[0] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", registeredbin_expected_prev);
+		$display ("     Real value = %b", registeredbin_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[11] = 1'b0;
+		last_registeredbin_exp[0] = registeredbin_expected_prev[0];
+	end
+	if (
+		( registeredbin_expected_prev[1] !== 1'bx ) && ( registeredbin_prev[1] !== registeredbin_expected_prev[1] )
+		&& ((registeredbin_expected_prev[1] !== last_registeredbin_exp[1]) ||
+			on_first_change[11])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port registeredbin[1] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", registeredbin_expected_prev);
+		$display ("     Real value = %b", registeredbin_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[11] = 1'b0;
+		last_registeredbin_exp[1] = registeredbin_expected_prev[1];
+	end
+	if (
+		( registeredbin_expected_prev[2] !== 1'bx ) && ( registeredbin_prev[2] !== registeredbin_expected_prev[2] )
+		&& ((registeredbin_expected_prev[2] !== last_registeredbin_exp[2]) ||
+			on_first_change[11])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port registeredbin[2] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", registeredbin_expected_prev);
+		$display ("     Real value = %b", registeredbin_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[11] = 1'b0;
+		last_registeredbin_exp[2] = registeredbin_expected_prev[2];
+	end
+	if (
+		( registeredbin_expected_prev[3] !== 1'bx ) && ( registeredbin_prev[3] !== registeredbin_expected_prev[3] )
+		&& ((registeredbin_expected_prev[3] !== last_registeredbin_exp[3]) ||
+			on_first_change[11])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port registeredbin[3] :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", registeredbin_expected_prev);
+		$display ("     Real value = %b", registeredbin_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[11] = 1'b0;
+		last_registeredbin_exp[3] = registeredbin_expected_prev[3];
+	end
+
+	trigger <= ~trigger;
+end
+initial 
+
+begin 
+$timeformat(-12,3," ps",6);
+#1000000;
+if (nummismatches > 0)
+	$display ("%d mismatched vectors : Simulation failed !",nummismatches);
+else
+	$display ("Simulation passed !");
+$finish;
+end 
+endmodule
+
+module proje_vlg_vec_tst();
+// constants                                           
+// general purpose registers
+reg bin0;
+reg bin1;
+reg clk;
+reg start;
+// wires                                               
+wire b;
+wire [17:0] bf1;
+wire [17:0] bf2;
+wire [17:0] bf3;
+wire [17:0] bf4;
+wire clk25;
+wire [7:0] color;
+wire [1:0] isitstart;
+wire o_hsync;
+wire o_vsync;
+wire [3:0] registeredbin;
+
+wire sampler;                             
+
+// assign statements (if any)                          
+proje i1 (
+// port map - connection between master ports and signals/registers   
+	.b(b),
+	.bf1(bf1),
+	.bf2(bf2),
+	.bf3(bf3),
+	.bf4(bf4),
+	.bin0(bin0),
+	.bin1(bin1),
+	.clk(clk),
+	.clk25(clk25),
+	.color(color),
+	.isitstart(isitstart),
+	.o_hsync(o_hsync),
+	.o_vsync(o_vsync),
+	.registeredbin(registeredbin),
+	.start(start)
+);
+
+// clk
+initial
+begin
+	clk = 1'b0;
+end 
+
+// start
+initial
+begin
+	start = 1'b1;
+	start = #70000 1'b0;
+	start = #30000 1'b1;
+end 
+
+// bin0
+initial
+begin
+	bin0 = 1'b1;
+	bin0 = #140000 1'b0;
+	bin0 = #10000 1'b1;
+	bin0 = #40000 1'b0;
+	bin0 = #20000 1'b1;
+end 
+
+// bin1
+initial
+begin
+	bin1 = 1'b1;
+	bin1 = #260000 1'b0;
+	bin1 = #20000 1'b1;
+	bin1 = #30000 1'b0;
+	bin1 = #20000 1'b1;
+end 
+
+proje_vlg_sample_tst tb_sample (
+	.bin0(bin0),
+	.bin1(bin1),
+	.clk(clk),
+	.start(start),
+	.sampler_tx(sampler)
+);
+
+proje_vlg_check_tst tb_out(
+	.b(b),
+	.bf1(bf1),
+	.bf2(bf2),
+	.bf3(bf3),
+	.bf4(bf4),
+	.clk25(clk25),
+	.color(color),
+	.isitstart(isitstart),
+	.o_hsync(o_hsync),
+	.o_vsync(o_vsync),
+	.registeredbin(registeredbin),
+	.sampler_rx(sampler)
+);
+endmodule
+
