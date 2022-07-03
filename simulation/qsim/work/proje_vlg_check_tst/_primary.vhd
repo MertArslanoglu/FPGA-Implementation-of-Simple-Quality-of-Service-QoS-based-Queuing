@@ -9,10 +9,10 @@ entity proje_vlg_check_tst is
         bf4             : in     vl_logic_vector(17 downto 0);
         clk25           : in     vl_logic;
         color           : in     vl_logic_vector(7 downto 0);
-        ind1            : in     vl_logic_vector(4 downto 0);
-        ind2            : in     vl_logic_vector(4 downto 0);
-        ind3            : in     vl_logic_vector(4 downto 0);
-        ind4            : in     vl_logic_vector(4 downto 0);
+        inside1         : in     vl_logic_vector(2 downto 0);
+        inside2         : in     vl_logic_vector(2 downto 0);
+        inside3         : in     vl_logic_vector(2 downto 0);
+        inside4         : in     vl_logic_vector(2 downto 0);
         isitstart       : in     vl_logic_vector(1 downto 0);
         o_hsync         : in     vl_logic;
         o_vsync         : in     vl_logic;

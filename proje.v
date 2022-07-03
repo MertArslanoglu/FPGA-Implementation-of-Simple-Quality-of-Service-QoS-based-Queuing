@@ -78,19 +78,22 @@ output reg [3:0] registeredbin;
 
 always @ (posedge clk) begin
 	clk25 = ~clk25;
-
+inside1=0;
+inside2=0;
+inside3=0;
+inside4=0;
 for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu buluyo
 		if (bf1[3*i+2] != 1) begin
-			inside1 <= inside1 + 1;
+			inside1 = inside1 + 1;
 		end
 		if (bf2[3*i+2] != 1) begin
-			inside2 <= inside2 + 1;
+			inside2 = inside2 + 1;
 		end
 		if (bf3[3*i+2] != 1) begin
-			inside3 <= inside3 + 1;
+			inside3 = inside3 + 1;
 		end
 		if (bf4[3*i+2] != 1) begin
-			inside4 <= inside4 + 1;
+			inside4 = inside4 + 1;
 		end	
 	end
 
@@ -569,70 +572,70 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 			color <= y3[(counter_x-340)* 50+(counter_y-300)];	
 			//index
 			
-			/*end else if(counter_x>=400&& counter_x<450&& counter_y>=300&& counter_y<352&&ind1[0]==0) begin 
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=300&& counter_y<352&&inside1[0]==0) begin 
 			color <= r0[(counter_x-400)* 50+(counter_y-300)];
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=300&& counter_y<352&&ind1[0]==1) begin 
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=300&& counter_y<352&&inside1[0]==1) begin 
 			color <= r1[(counter_x-400)* 50+(counter_y-300)];
 		
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=300&& counter_y<352&&ind1[1]==0) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=300&& counter_y<352&&inside1[1]==0) begin 
 			color <= r0[(counter_x-460)* 50+(counter_y-300)];	
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=300&& counter_y<352&&ind1[1]==1) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=300&& counter_y<352&&inside1[1]==1) begin 
 			color <= r1[(counter_x-460)* 50+(counter_y-300)];
 			
 			
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=300&& counter_y<352&&ind1[2]==0) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=300&& counter_y<352&&inside1[2]==0) begin 
 			color <= r0[(counter_x-522)* 50+(counter_y-300)];
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=300&& counter_y<352&&ind1[2]==1) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=300&& counter_y<352&&inside1[2]==1) begin 
 			color <= r1[(counter_x-522)* 50+(counter_y-300)];		
-			//ind2
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=354&& counter_y<406&&ind2[0]==0) begin 
+			//inside2
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=354&& counter_y<406&&inside2[0]==0) begin 
 			color <= g0[(counter_x-400)* 50+(counter_y-300)];
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=354&& counter_y<406&&ind2[0]==1) begin 
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=354&& counter_y<406&&inside2[0]==1) begin 
 			color <= g1[(counter_x-400)* 50+(counter_y-300)];	
 			
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=354&& counter_y<406&&ind2[1]==0) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=354&& counter_y<406&&inside2[1]==0) begin 
 			color <= g0[(counter_x-460)* 50+(counter_y-300)];
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=354&& counter_y<406&&ind2[1]==1) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=354&& counter_y<406&&inside2[1]==1) begin 
 			color <= g1[(counter_x-460)* 50+(counter_y-300)];		
 			
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=354&& counter_y<406&&ind2[2]==0) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=354&& counter_y<406&&inside2[2]==0) begin 
 			color <= g0[(counter_x-522)* 50+(counter_y-300)];
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=354&& counter_y<406&&ind2[2]==1) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=354&& counter_y<406&&inside2[2]==1) begin 
 			color <= g1[(counter_x-522)* 50+(counter_y-300)];	
-			// ind3
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=408&& counter_y<460&&ind3[0]==0) begin 
+			// inside3
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=408&& counter_y<460&&inside3[0]==0) begin 
 			color <= b0[(counter_x-400)* 50+(counter_y-300)];
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=408&& counter_y<460&&ind3[0]==1) begin 
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=408&& counter_y<460&&inside3[0]==1) begin 
 			color <= b1[(counter_x-400)* 50+(counter_y-300)];	
 			
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=408&& counter_y<460&&ind3[1]==0) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=408&& counter_y<460&&inside3[1]==0) begin 
 			color <= b0[(counter_x-460)* 50+(counter_y-300)];	
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=408&& counter_y<460&&ind3[1]==1) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=408&& counter_y<460&&inside3[1]==1) begin 
 			color <= b1[(counter_x-460)* 50+(counter_y-300)];
 			
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=408&& counter_y<460&&ind3[2]==0) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=408&& counter_y<460&&inside3[2]==0) begin 
 			color <= b0[(counter_x-522)* 50+(counter_y-300)];
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=408&& counter_y<460&&ind3[2]==1) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=408&& counter_y<460&&inside3[2]==1) begin 
 			color <= b1[(counter_x-522)* 50+(counter_y-300)];		
 			
-			// ind4
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=462&& counter_y<514&&ind4[0]==0) begin 
+			// inside4
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=462&& counter_y<514&&inside4[0]==0) begin 
 			color <= y0[(counter_x-400)* 50+(counter_y-300)];
-			end else if(counter_x>=400&& counter_x<450&& counter_y>=462&& counter_y<514&&ind4[0]==1) begin 
+			end else if(counter_x>=400&& counter_x<450&& counter_y>=462&& counter_y<514&&inside4[0]==1) begin 
 			color <= y1[(counter_x-400)* 50+(counter_y-300)];
 		
 		
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=462&& counter_y<514&&ind4[1]==0) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=462&& counter_y<514&&inside4[1]==0) begin 
 			color <= y0[(counter_x-460)* 50+(counter_y-300)];
-			end else if(counter_x>=460&& counter_x<510&& counter_y>=462&& counter_y<514&&ind4[1]==1) begin 
+			end else if(counter_x>=460&& counter_x<510&& counter_y>=462&& counter_y<514&&inside4[1]==1) begin 
 			color <= y1[(counter_x-460)* 50+(counter_y-300)];		
 			
 			
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=462&& counter_y<514&&ind4[2]==0) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=462&& counter_y<514&&inside4[2]==0) begin 
 			color <= y0[(counter_x-522)* 50+(counter_y-300)];
-			end else if(counter_x>=522&& counter_x<572&& counter_y>=462&& counter_y<514&&ind4[2]==1) begin 
+			end else if(counter_x>=522&& counter_x<572&& counter_y>=462&& counter_y<514&&inside4[2]==1) begin 
 			color <= y1[(counter_x-522)* 50+(counter_y-300)];	
-			*/
+			
 			end else begin
 			color <=0;
 			end

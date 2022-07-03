@@ -17,9 +17,9 @@ entity proje is
         o_hsync         : out    vl_logic;
         o_vsync         : out    vl_logic;
         color           : out    vl_logic_vector(7 downto 0);
-        ind1            : out    vl_logic_vector(4 downto 0);
-        ind2            : out    vl_logic_vector(4 downto 0);
-        ind3            : out    vl_logic_vector(4 downto 0);
-        ind4            : out    vl_logic_vector(4 downto 0)
+        inside1         : out    vl_logic_vector(2 downto 0);
+        inside2         : out    vl_logic_vector(2 downto 0);
+        inside3         : out    vl_logic_vector(2 downto 0);
+        inside4         : out    vl_logic_vector(2 downto 0)
     );
 end proje;
