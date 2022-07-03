@@ -21,9 +21,40 @@ reg [9:0] counter_y = 0;  // vertical counter
 reg [20:0] cnt = 0;
 reg [7:0]empty[0:2703];
 reg [7:0]r0[0:2499];
+reg [7:0]r1[0:2499];
+reg [7:0]r2[0:2499];
+reg [7:0]r3[0:2499];
+reg [7:0]g0[0:2499];
+reg [7:0]g1[0:2499];
+reg [7:0]g2[0:2499];
+reg [7:0]g3[0:2499];
+reg [7:0]b0[0:2499];
+reg [7:0]b1[0:2499];
+reg [7:0]b2[0:2499];
+reg [7:0]b3[0:2499];
+reg [7:0]y0[0:2499];
+reg [7:0]y1[0:2499];
+reg [7:0]y2[0:2499];
+reg [7:0]y3[0:2499];
+
 initial begin
 	$readmemh("empty.list", empty);
 	$readmemh("r0.list", r0);
+	$readmemh("r1.list", r1);
+	$readmemh("r2.list", r2);
+	$readmemh("r3.list", r3);
+	$readmemh("g0.list", g0);
+	$readmemh("g1.list", g1);
+	$readmemh("g2.list", g2);
+	$readmemh("g3.list", g3);
+	$readmemh("y0.list", y0);
+	$readmemh("y1.list", y1);
+	$readmemh("y2.list", y2);
+	$readmemh("y3.list", y3);
+	$readmemh("b0.list", b0);
+	$readmemh("b1.list", b1);
+	$readmemh("b2.list", b2);
+	$readmemh("b3.list", b3);
 	end
 	
 
@@ -175,84 +206,371 @@ always @(posedge clk25)  // horizontal counter
 
 assign o_hsync = (counter_x >= 0 && counter_x < 96) ? 1:0;  // hsync high for 96 counts                                                 
 assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 counts
+
 	always @ (posedge clk)
 		begin
-			if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[2:0]==7) begin //B1/6
-			color <= empty[(counter_x-154)* 52+(counter_y-40)];
-			end else if(counter_x>=155&& counter_x<205&& counter_y>=41&& counter_y<91&&bf1[2:0]==0) begin //B1/6
-			color <= r0[(counter_x-155)* 50+(counter_y-41)];
-		
-			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144) begin
+			if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[17:15]==7) begin //B1/6
+			color <= empty[(counter_x-154)* 52+(counter_y-40)];			
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144&&bf1[14:12]==7) begin
 			color <= empty[(counter_x-154)* 52+(counter_y-92)];
 			
-			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196) begin
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196&&bf1[11:9]==7) begin
 			color <= empty[(counter_x-154)* 52+(counter_y-144)];
 			
-			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248) begin
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248&&bf1[8:6]==7) begin
 			color <= empty[(counter_x-154)* 52+(counter_y-196)];
 			
-			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300) begin
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300&&bf1[5:3]==7) begin
 			color <= empty[(counter_x-154)* 52+(counter_y-248)];
 			
-			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352) begin //B1/1
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352&&bf1[2:0]==7) begin //B1/1
 			color <= empty[(counter_x-154)* 52+(counter_y-300)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92) begin //B2/6
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92&&bf2[17:15]==7) begin //B2/6
 			color <= empty[(counter_x-216)* 52+(counter_y-40)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144) begin 
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144&&bf2[14:12]==7) begin 
 			color <= empty[(counter_x-216)* 52+(counter_y-92)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196) begin
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196&&bf2[11:9]==7) begin
 			color <= empty[(counter_x-216)* 52+(counter_y-144)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248) begin
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248&&bf2[8:6]==7) begin
 			color <= empty[(counter_x-216)* 52+(counter_y-196)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300) begin
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300&&bf2[5:3]==7) begin
 			color <= empty[(counter_x-216)* 52+(counter_y-248)];
 			
-			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352) begin //B2/1
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352&&bf2[2:0]==7) begin //B2/1
 			color <= empty[(counter_x-216)* 52+(counter_y-300)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92) begin //B3/6
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92&&bf3[17:15]==7) begin //B3/6
 			color <= empty[(counter_x-278)* 52+(counter_y-40)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144) begin 
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144&&bf3[14:12]==7) begin 
 			color <= empty[(counter_x-278)* 52+(counter_y-92)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196) begin
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196&&bf3[11:9]==7) begin
 			color <= empty[(counter_x-278)* 52+(counter_y-144)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248) begin
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248&&bf3[8:6]==7) begin
 			color <= empty[(counter_x-278)* 52+(counter_y-196)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300) begin
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300&&bf3[5:3]==7) begin
 			color <= empty[(counter_x-278)* 52+(counter_y-248)];
 			
-			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352) begin //B3/1
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352&&bf3[2:0]==7) begin //B3/1
 			color <= empty[(counter_x-278)* 52+(counter_y-300)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92) begin //B4/6
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92&&bf4[17:15]==7) begin //B4/6
 			color <= empty[(counter_x-340)* 52+(counter_y-40)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144) begin 
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144&&bf4[14:12]==7) begin 
 			color <= empty[(counter_x-340)* 52+(counter_y-92)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196) begin
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196&&bf4[11:9]==7) begin
 			color <= empty[(counter_x-340)* 52+(counter_y-144)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248) begin
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248&&bf4[8:6]==7) begin
 			color <= empty[(counter_x-340)* 52+(counter_y-196)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300) begin
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300&&bf4[5:3]==7) begin
 			color <= empty[(counter_x-340)* 52+(counter_y-248)];
 			
-			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352) begin //B4/1
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352&&bf4[2:0]==7) begin //B4/1
 			color <= empty[(counter_x-340)* 52+(counter_y-300)];
+			///// 0
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[17:15]==0) begin //B1/6
+			color <= r0[(counter_x-154)* 52+(counter_y-40)];			
 			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144&&bf1[14:12]==0) begin
+			color <= r0[(counter_x-154)* 52+(counter_y-92)];
 			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196&&bf1[11:9]==0) begin
+			color <= r0[(counter_x-154)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248&&bf1[8:6]==0) begin
+			color <= r0[(counter_x-154)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300&&bf1[5:3]==0) begin
+			color <= r0[(counter_x-154)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352&&bf1[2:0]==0) begin //B1/1
+			color <= r0[(counter_x-154)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92&&bf2[17:15]==0) begin //B2/6
+			color <= g0[(counter_x-216)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144&&bf2[14:12]==0) begin 
+			color <= g0[(counter_x-216)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196&&bf2[11:9]==0) begin
+			color <= g0[(counter_x-216)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248&&bf2[8:6]==0) begin
+			color <= g0[(counter_x-216)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300&&bf2[5:3]==0) begin
+			color <= g0[(counter_x-216)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352&&bf2[2:0]==0) begin //B2/1
+			color <= g0[(counter_x-216)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92&&bf3[17:15]==0) begin //B3/6
+			color <= b0[(counter_x-278)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144&&bf3[14:12]==0) begin 
+			color <= b0[(counter_x-278)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196&&bf3[11:9]==0) begin
+			color <= b0[(counter_x-278)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248&&bf3[8:6]==0) begin
+			color <= b0[(counter_x-278)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300&&bf3[5:3]==0) begin
+			color <= b0[(counter_x-278)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352&&bf3[2:0]==0) begin //B3/1
+			color <= b0[(counter_x-278)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92&&bf4[17:15]==0) begin //B4/6
+			color <= y0[(counter_x-340)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144&&bf4[14:12]==0) begin 
+			color <= y0[(counter_x-340)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196&&bf4[11:9]==0) begin
+			color <= y0[(counter_x-340)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248&&bf4[8:6]==0) begin
+			color <= y0[(counter_x-340)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300&&bf4[5:3]==0) begin
+			color <= y0[(counter_x-340)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352&&bf4[2:0]==0) begin //B4/1
+			color <= y0[(counter_x-340)* 52+(counter_y-300)];
+			
+			///// 1
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[17:15]==1) begin //B1/6
+			color <= r1[(counter_x-154)* 52+(counter_y-40)];			
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144&&bf1[14:12]==1) begin
+			color <= r1[(counter_x-154)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196&&bf1[11:9]==1) begin
+			color <= r1[(counter_x-154)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248&&bf1[8:6]==1) begin
+			color <= r1[(counter_x-154)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300&&bf1[5:3]==1) begin
+			color <= r1[(counter_x-154)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352&&bf1[2:0]==1) begin //B1/1
+			color <= r1[(counter_x-154)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92&&bf2[17:15]==1) begin //B2/6
+			color <= g1[(counter_x-216)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144&&bf2[14:12]==1) begin 
+			color <= g1[(counter_x-216)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196&&bf2[11:9]==1) begin
+			color <= g1[(counter_x-216)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248&&bf2[8:6]==1) begin
+			color <= g1[(counter_x-216)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300&&bf2[5:3]==1) begin
+			color <= g1[(counter_x-216)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352&&bf2[2:0]==1) begin //B2/1
+			color <= g1[(counter_x-216)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92&&bf3[17:15]==1) begin //B3/6
+			color <= b1[(counter_x-278)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144&&bf3[14:12]==1) begin 
+			color <= b1[(counter_x-278)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196&&bf3[11:9]==1) begin
+			color <= b1[(counter_x-278)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248&&bf3[8:6]==1) begin
+			color <= b1[(counter_x-278)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300&&bf3[5:3]==1) begin
+			color <= b1[(counter_x-278)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352&&bf3[2:0]==1) begin //B3/1
+			color <= b1[(counter_x-278)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92&&bf4[17:15]==1) begin //B4/6
+			color <= y1[(counter_x-340)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144&&bf4[14:12]==1) begin 
+			color <= y1[(counter_x-340)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196&&bf4[11:9]==1) begin
+			color <= y1[(counter_x-340)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248&&bf4[8:6]==1) begin
+			color <= y1[(counter_x-340)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300&&bf4[5:3]==1) begin
+			color <= y1[(counter_x-340)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352&&bf4[2:0]==1) begin //B4/1
+			color <= y1[(counter_x-340)* 52+(counter_y-300)];
 
+			///// 2
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[17:15]==2) begin //B1/6
+			color <= r2[(counter_x-154)* 52+(counter_y-40)];			
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144&&bf1[14:12]==2) begin
+			color <= r2[(counter_x-154)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196&&bf1[11:9]==2) begin
+			color <= r2[(counter_x-154)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248&&bf1[8:6]==2) begin
+			color <= r2[(counter_x-154)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300&&bf1[5:3]==2) begin
+			color <= r2[(counter_x-154)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352&&bf1[2:0]==2) begin //B1/1
+			color <= r2[(counter_x-154)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92&&bf2[17:15]==2) begin //B2/6
+			color <= g2[(counter_x-216)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144&&bf2[14:12]==2) begin 
+			color <= g2[(counter_x-216)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196&&bf2[11:9]==2) begin
+			color <= g2[(counter_x-216)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248&&bf2[8:6]==2) begin
+			color <= g2[(counter_x-216)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300&&bf2[5:3]==2) begin
+			color <= g2[(counter_x-216)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352&&bf2[2:0]==2) begin //B2/1
+			color <= g2[(counter_x-216)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92&&bf3[17:15]==2) begin //B3/6
+			color <= b2[(counter_x-278)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144&&bf3[14:12]==2) begin 
+			color <= b2[(counter_x-278)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196&&bf3[11:9]==2) begin
+			color <= b2[(counter_x-278)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248&&bf3[8:6]==2) begin
+			color <= b2[(counter_x-278)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300&&bf3[5:3]==2) begin
+			color <= b2[(counter_x-278)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352&&bf3[2:0]==2) begin //B3/1
+			color <= b2[(counter_x-278)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92&&bf4[17:15]==2) begin //B4/6
+			color <= y2[(counter_x-340)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144&&bf4[14:12]==2) begin 
+			color <= y2[(counter_x-340)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196&&bf4[11:9]==2) begin
+			color <= y2[(counter_x-340)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248&&bf4[8:6]==2) begin
+			color <= y2[(counter_x-340)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300&&bf4[5:3]==2) begin
+			color <= y2[(counter_x-340)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352&&bf4[2:0]==2) begin //B4/1
+			color <= y2[(counter_x-340)* 52+(counter_y-300)];			
+
+						///// 3
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=40&& counter_y<92&&bf1[17:15]==3) begin //B1/6
+			color <= r3[(counter_x-154)* 52+(counter_y-40)];			
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=92&& counter_y<144&&bf1[14:12]==3) begin
+			color <= r3[(counter_x-154)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=144&& counter_y<196&&bf1[11:9]==3) begin
+			color <= r3[(counter_x-154)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=196&& counter_y<248&&bf1[8:6]==3) begin
+			color <= r3[(counter_x-154)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=248&& counter_y<300&&bf1[5:3]==3) begin
+			color <= r3[(counter_x-154)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=154&& counter_x<206&& counter_y>=300&& counter_y<352&&bf1[2:0]==3) begin //B1/1
+			color <= r3[(counter_x-154)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=40&& counter_y<92&&bf2[17:15]==3) begin //B2/6
+			color <= g3[(counter_x-216)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=92&& counter_y<144&&bf2[14:12]==3) begin 
+			color <= g3[(counter_x-216)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=144&& counter_y<196&&bf2[11:9]==3) begin
+			color <= g3[(counter_x-216)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=196&& counter_y<248&&bf2[8:6]==3) begin
+			color <= g3[(counter_x-216)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=248&& counter_y<300&&bf2[5:3]==3) begin
+			color <= g3[(counter_x-216)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=216&& counter_x<268&& counter_y>=300&& counter_y<352&&bf2[2:0]==3) begin //B2/1
+			color <= g3[(counter_x-216)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=40&& counter_y<92&&bf3[17:15]==3) begin //B3/6
+			color <= b3[(counter_x-278)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=92&& counter_y<144&&bf3[14:12]==3) begin 
+			color <= b3[(counter_x-278)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=144&& counter_y<196&&bf3[11:9]==3) begin
+			color <= b3[(counter_x-278)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=196&& counter_y<248&&bf3[8:6]==3) begin
+			color <= b3[(counter_x-278)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=248&& counter_y<300&&bf3[5:3]==3) begin
+			color <= b3[(counter_x-278)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=278&& counter_x<330&& counter_y>=300&& counter_y<352&&bf3[2:0]==3) begin //B3/1
+			color <= b3[(counter_x-278)* 52+(counter_y-300)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=40&& counter_y<92&&bf4[17:15]==3) begin //B4/6
+			color <= y3[(counter_x-340)* 52+(counter_y-40)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=92&& counter_y<144&&bf4[14:12]==3) begin 
+			color <= y3[(counter_x-340)* 52+(counter_y-92)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=144&& counter_y<196&&bf4[11:9]==3) begin
+			color <= y3[(counter_x-340)* 52+(counter_y-144)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=196&& counter_y<248&&bf4[8:6]==3) begin
+			color <= y3[(counter_x-340)* 52+(counter_y-196)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=248&& counter_y<300&&bf4[5:3]==3) begin
+			color <= y3[(counter_x-340)* 52+(counter_y-248)];
+			
+			end else if(counter_x>=340&& counter_x<392&& counter_y>=300&& counter_y<352&&bf4[2:0]==3) begin //B4/1
+			color <= y3[(counter_x-340)* 52+(counter_y-300)];	
 		end else begin
 			color <=0;
 			end
