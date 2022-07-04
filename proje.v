@@ -50,7 +50,7 @@ reg [6:0]drop2;
 reg [6:0]drop3;
 reg [6:0]drop4;
 reg [6:0]dropt;
-
+reg [1:0] h=0;
 
 reg [3:0]drop11;
 reg [3:0]drop21;
@@ -96,9 +96,7 @@ initial begin
 	$readmemh("nine.list", nine);
 	$readmemh("transmitted.list", transmitted);	
 	$readmemh("received.list", received);	
-	$readmemh("dropped.list", dropped);
-	$readmemh("tot.list", dropped);
-	//$readmemh("read.list", read);		
+	$readmemh("dropped.list", dropped);		
 	end
 	
 
@@ -115,7 +113,7 @@ reg [3:0] inside1a;
 reg [3:0] inside2a;
 reg [3:0] inside3a;
 reg [4:0] i =0 ;
-
+reg e =1;
 
 output reg [1:0] isitstart;
 initial isitstart = 0;
@@ -204,9 +202,9 @@ end
 	
 end
 always @( posedge(b)) begin
-if (r < 5)  r <= r+1;
+if (r < 9)  r <= r+1;
 
-if(r!=4)begin
+if(r!=8)begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -254,39 +252,80 @@ dropt2<=dropt/10;
 
 end
 
-if ( r == 4) begin
+if ( r == 8) begin
 	inside3a<=inside3+1;
 	inside2a<=inside2+2;
 	inside1a<=inside1+3;
-	if ( inside4 >= 4) begin
+	
+	if ( inside4 >= 3) begin
 	
 	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
 	bf4[3*inside4-1] <= 1;
 	bf4[3*inside4-2] <= 1;
 	bf4[3*inside4-3] <= 1;
-	
-	end else if ( inside3>=3) begin
+	e<=0;
+	h<=11;
+	end else if ( inside4 < 3 && inside3>=4) begin
 	
 	readout <= ({bf3[(3*inside3-2)],bf3[(3*inside3-3)]});
 	bf3[3*inside3-1] <= 1;
 	bf3[3*inside3-2] <= 1;
 	bf3[3*inside3-3] <= 1;
-	
-	end else if ( inside2>=2) begin
+	e<=0;
+	h<=10;
+	end else if ( inside4 < 3 && inside3 < 4 && inside2>=5) begin
 	
 	readout <= ({bf2[(3*inside2-2)],bf2[(3*inside2-3)]});
 	bf2[3*inside2-1] <= 1;
 	bf2[3*inside2-2] <= 1;
 	bf2[3*inside2-3] <= 1;
-	
-	end else begin
+	e<=0;
+	h<=01;
+	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1>=5) begin
 	
 	readout <= ({bf1[(3*inside1-2)],bf1[(3*inside1-3)]});
 	bf1[3*inside1-1] <= 1;
 	bf1[3*inside1-2] <= 1;
 	bf1[3*inside1-3] <= 1;
+	e<=0;
+	h<=00;
+	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1>0) begin
+	readout <= ({bf1[(3*inside1-2)],bf1[(3*inside1-3)]});
+	bf1[3*inside1-1] <= 1;
+	bf1[3*inside1-2] <= 1;
+	bf1[3*inside1-3] <= 1;
+	e<=0;
+	h<=00;
+	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2>0) begin
 	
+	readout <= ({bf2[(3*inside2-2)],bf2[(3*inside2-3)]});
+	bf2[3*inside2-1] <= 1;
+	bf2[3*inside2-2] <= 1;
+	bf2[3*inside2-3] <= 1;
+	e<=0;
+	h<=01;
+	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2==0 && inside3>0) begin
+	
+	readout <= ({bf3[(3*inside3-2)],bf3[(3*inside3-3)]});
+	bf3[3*inside3-1] <= 1;
+	bf3[3*inside3-2] <= 1;
+	bf3[3*inside3-3] <= 1;
+	e<=0;
+	h<=10;
+	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2==0 && inside3==0 && inside4 >0) begin
+	
+	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
+	bf4[3*inside4-1] <= 1;
+	bf4[3*inside4-2] <= 1;
+	bf4[3*inside4-3] <= 1;
+	e<=0;
+	h<=11;
+	end else if(inside1==0 &&inside2==0 && inside3==0 && inside4 ==0) begin
+	
+	e<=1;
 	end
+
+	
 r<=0;	
 end
 end
@@ -732,14 +771,48 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==9) begin  //dropped
 			color <= nine[(counter_x-420)* 8+(counter_y-332)];
 			//readout
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==0) begin  //dropped
-			color <= zero[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==1) begin  //dropped
-			color <= one[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==2) begin  //dropped
-			color <= two[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==3) begin  //dropped
-			color <= three[(counter_x-420)* 8+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==0&&e==0) begin  
+			color <= r0[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==1&&e==0) begin  
+			color <= g0[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==2&&e==0) begin  
+			color <= b0[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==3&&e==0) begin  
+			color <= y0[(counter_x-420)* 50+(counter_y-400)];
+			
+			
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==1&&h==0&&e==0) begin  
+			color <= r1[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==1&&h==1&&e==0) begin  
+			color <= g1[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==1&&h==2&e==0) begin  
+			color <= b1[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==1&&h==3&&e==0) begin  
+			color <= y1[(counter_x-420)* 50+(counter_y-400)];
+			
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==2&&h==0&&e==0) begin  
+			color <= r2[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==2&&h==1&&e==0) begin  
+			color <= g2[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==2&&h==2&&e==0) begin  
+			color <= b2[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==2&&h==3&&e==0) begin  
+			color <= y2[(counter_x-420)* 50+(counter_y-400)];
+			
+			
+			
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==3&&h==0&&e==0) begin  
+			color <= r3[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==3&&h==1&&e==0) begin  
+			color <= g3[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==3&&h==2&e==0) begin  
+			color <= b3[(counter_x-420)* 50+(counter_y-400)];
+			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==3&&h==3&&e==0) begin  
+			color <= y3[(counter_x-420)* 50+(counter_y-400)];
+			
+			end else if(counter_x>=420&& counter_x<472&& counter_y>=400&& counter_y<452&&e==1) begin  
+			color <= empty[(counter_x-420)* 52+(counter_y-400)];
+			
 			end else begin
 			color <=0;
 			end
