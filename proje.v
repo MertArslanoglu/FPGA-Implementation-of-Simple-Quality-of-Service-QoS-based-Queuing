@@ -41,10 +41,9 @@ reg [7:0]six[0:63];
 reg [7:0]seven[0:63];
 reg [7:0]eight[0:63];
 reg [7:0]nine[0:63];
-reg [7:0]transmitted[0:599];
-reg [7:0]received[0:999];
-reg [7:0]dropped[0:599];
-reg [7:0]tot[0:299];
+reg [7:0]transmitted[0:9999];
+reg [7:0]received[0:9999];
+reg [7:0]dropped[0:9999];
 reg [7:0]read[0:1499];
 reg [6:0]drop1;
 reg [6:0]drop2;
@@ -200,7 +199,7 @@ always @( posedge(b)) begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
-				if(bf1[15]==0) drop1 = drop1+1;
+				if(bf1[17]==0) drop1 = drop1+1;
 				bf1[17:3]= bf1[14:0];
 				bf1[2:0]= {1'b0,registeredbin[1:0]};
 				
@@ -208,21 +207,21 @@ always @( posedge(b)) begin
 			end
 		
 		2'b01: begin
-			if(bf2[15]==0) drop2 = drop2+1;	
+			if(bf2[17]==0) drop2 = drop2+1;	
 				bf2[17:3]= bf2[14:0];
 				bf2[2:0]= {1'b0,registeredbin[1:0]};
 //loss hesaplama
 			end
 		
 		2'b10: begin
-		if(bf3[15]==0) drop3 = drop3+1;
+		if(bf3[17]==0) drop3 = drop3+1;
 				bf3[17:3]= bf3[14:0];
 				bf3[2:0]= {1'b0,registeredbin[1:0]};
 //loss hesaplama
 			end
 		
 		2'b11: begin
-			if(bf4[15]==0) drop4 = drop4+1;
+			if(bf4[17]==0) drop4 = drop4+1;
 				bf4[17:3]= bf4[14:0];
 				bf4[2:0]= {1'b0,registeredbin[1:0]};
 //loss hesaplama
@@ -634,23 +633,15 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 		
 			//stats templete
 			
-			end else if(counter_x>=400&& counter_x<500&& counter_y>=60&& counter_y<70) begin  //transmitted
-			color <= transmitted[(counter_x-400)* 10+(counter_y-60)];
+			end else if(counter_x>=400&& counter_x<600&& counter_y>=60&& counter_y<110) begin  //transmitted
+			color <= transmitted[(counter_x-400)* 50+(counter_y-60)];
 			
-			end else if(counter_x>=430&& counter_x<438&& counter_y>=72&& counter_y<80) begin  
-			color <= one[(counter_x-430)* 8+(counter_y-72)];
+			end else if(counter_x>=400&& counter_x<600&& counter_y>=170&& counter_y<220) begin  //transmitted
+			color <= received[(counter_x-400)* 50+(counter_y-170)];
 			
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=72&& counter_y<80) begin  
-			color <= two[(counter_x-460)* 8+(counter_y-72)];
+			end else if(counter_x>=400&& counter_x<600&& counter_y>=280&& counter_y<330) begin  //transmitted
+			color <= dropped[(counter_x-400)* 50+(counter_y-280)];
 			
-			end else if(counter_x>=490&& counter_x<498&& counter_y>=72&& counter_y<80) begin  
-			color <= three[(counter_x-490)* 8+(counter_y-72)];
-			
-			end else if(counter_x>=520&& counter_x<528&& counter_y>=72&& counter_y<80) begin  
-			color <= four[(counter_x-520)* 8+(counter_y-72)];
-			
-			end else if(counter_x>=550&& counter_x<580&& counter_y>=72&& counter_y<82) begin  
-			color <= tot[(counter_x-550)* 8+(counter_y-72)];
 			
 			
 			end else begin
