@@ -50,7 +50,7 @@ reg [6:0]drop2;
 reg [6:0]drop3;
 reg [6:0]drop4;
 reg [6:0]dropt;
-
+reg c=0;
 
 reg [3:0]drop11;
 reg [3:0]drop21;
@@ -63,7 +63,7 @@ reg [3:0]drop42;
 reg [3:0]dropt1;
 reg [3:0]dropt2;
 reg [1:0]readout =0;
-reg [20:0] r=0;
+reg [28:0] r=0;
 reg cnt;
 initial cnt = 0;
 initial begin
@@ -126,10 +126,13 @@ output reg [3:0] registeredbin;
 
 always @ (posedge clk) begin
 	clk25 = ~clk25;
+
+	
 inside1=0;
 inside2=0;
 inside3=0;
 inside4=0;
+
 for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu buluyo
 		if (bf1[3*i+2] != 1) begin
 			inside1 = inside1 + 1;
@@ -192,47 +195,14 @@ for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu b
 end
 
 	if (isitstart == 0) b<=1;
-// read 3 second
-if (r < 76000000)  r <= r+1;
 
-if ( r == 75555555) begin
 
-	if ( inside4 >= 4) begin
-	
-	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
-	bf4[3*inside4-1] <= 1;
-	bf4[3*inside4-2] <= 1;
-	bf4[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 >= 3) begin
-	
-	readout <= ({bf3[(3*inside4-2)],bf3[(3*inside4-3)]});
-	bf3[3*inside4-1] <= 1;
-	bf3[3*inside4-2] <= 1;
-	bf3[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 < 3 && inside2 >= 2) begin
-	
-	readout <= ({bf2[(3*inside4-2)],bf2[(3*inside4-3)]});
-	bf2[3*inside4-1] <= 1;
-	bf2[3*inside4-2] <= 1;
-	bf2[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 < 3 && inside2 < 2 ) begin
-	
-	readout <= ({bf1[(3*inside4-2)],bf1[(3*inside4-3)]});
-	bf1[3*inside4-1] <= 1;
-	bf1[3*inside4-2] <= 1;
-	bf1[3*inside4-3] <= 1;
-	
-	end
-r<=0;	
+
 end
 	
-end
 always @( posedge(b)) begin
 
-
+if(c==0) begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -280,7 +250,45 @@ dropt2<=dropt/10;
 
 
 end
+always@(~clk) begin
+				// read 3 second
+if (r < 76000000)  r = r+1;
 
+if ( r == 75555555) begin
+
+	if ( inside4 >= 4) begin
+	
+	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
+	bf4[3*inside4-1] <= 1;
+	bf4[3*inside4-2] <= 1;
+	bf4[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 >= 3) begin
+	
+	readout <= ({bf3[(3*inside4-2)],bf3[(3*inside4-3)]});
+	bf3[3*inside4-1] <= 1;
+	bf3[3*inside4-2] <= 1;
+	bf3[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 < 3 && inside2 >= 2) begin
+	
+	readout <= ({bf2[(3*inside4-2)],bf2[(3*inside4-3)]});
+	bf2[3*inside4-1] <= 1;
+	bf2[3*inside4-2] <= 1;
+	bf2[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 < 3 && inside2 < 2 ) begin
+	
+	readout <= ({bf1[(3*inside4-2)],bf1[(3*inside4-3)]});
+	bf1[3*inside4-1] <= 1;
+	bf1[3*inside4-2] <= 1;
+	bf1[3*inside4-3] <= 1;
+	
+	end
+r<=0;	
+
+end
+end
 always @(posedge clk25)  // horizontal counter
 		begin 
 			if (counter_x < 799)
@@ -297,8 +305,9 @@ always @(posedge clk25)  // horizontal counter
 						counter_y <= counter_y + 1;
 					else
 						counter_y <= 0;              
-				end  // if (counter_x...
-		end  // always
+				end  
+
+		end  
 
 assign o_hsync = (counter_x >= 0 && counter_x < 96) ? 1:0;  // hsync high for 96 counts                                                 
 assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 counts
@@ -720,15 +729,19 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 			color <= eight[(counter_x-420)* 8+(counter_y-332)];
 			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==9) begin  //dropped
 			color <= nine[(counter_x-420)* 8+(counter_y-332)];
+			
 			//readout
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==0) begin  //dropped
-			color <= zero[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==1) begin  //dropped
-			color <= one[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==2) begin  //dropped
-			color <= two[(counter_x-420)* 8+(counter_y-400)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=400&& counter_y<448&&readout==3) begin  //dropped
-			color <= three[(counter_x-420)* 8+(counter_y-400)];
+			
+			
+			end else if(counter_x>=175&& counter_x<225&& counter_y>=370&& counter_y<520&&readout==0) begin  
+			color <= r0[(counter_x-175)* 50+(counter_y-370)];
+			end else if(counter_x>=175&& counter_x<225&& counter_y>=370&& counter_y<520&&readout==1) begin  
+			color <= r1[(counter_x-175)* 50+(counter_y-370)];
+			end else if(counter_x>=175&& counter_x<225&& counter_y>=370&& counter_y<520&&readout==2) begin  
+			color <= r2[(counter_x-175)* 50+(counter_y-370)];
+			end else if(counter_x>=175&& counter_x<225&& counter_y>=370&& counter_y<520&&readout==3) begin  
+			color <= r3[(counter_x-175)* 50+(counter_y-370)];
+			
 			end else begin
 			color <=0;
 			end
@@ -738,3 +751,5 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 		end
 	
 endmodule
+
+
