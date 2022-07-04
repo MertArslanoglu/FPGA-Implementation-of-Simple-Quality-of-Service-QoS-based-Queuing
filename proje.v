@@ -50,7 +50,7 @@ reg [6:0]drop2;
 reg [6:0]drop3;
 reg [6:0]drop4;
 reg [6:0]dropt;
-reg c=0;
+
 
 reg [3:0]drop11;
 reg [3:0]drop21;
@@ -202,7 +202,44 @@ end
 	
 always @( posedge(b)) begin
 
-if(c==0) begin
+if (r < 5)  r = r+1;
+
+if ( r == 4) begin
+
+	if ( inside4 >= 4) begin
+	
+	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
+	bf4[3*inside4-1] <= 1;
+	bf4[3*inside4-2] <= 1;
+	bf4[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 >= 3) begin
+	
+	readout <= ({bf3[(3*inside4-2)],bf3[(3*inside4-3)]});
+	bf3[3*inside4-1] <= 1;
+	bf3[3*inside4-2] <= 1;
+	bf3[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 < 3 && inside2 >= 2) begin
+	
+	readout <= ({bf2[(3*inside4-2)],bf2[(3*inside4-3)]});
+	bf2[3*inside4-1] <= 1;
+	bf2[3*inside4-2] <= 1;
+	bf2[3*inside4-3] <= 1;
+	
+	end else if (inside4 < 4 && inside3 < 3 && inside2 < 2 ) begin
+	
+	readout <= ({bf1[(3*inside4-2)],bf1[(3*inside4-3)]});
+	bf1[3*inside4-1] <= 1;
+	bf1[3*inside4-2] <= 1;
+	bf1[3*inside4-3] <= 1;
+	
+	end
+r<=0;	
+
+end
+
+if(r!=4) begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -252,42 +289,7 @@ dropt2<=dropt/10;
 end
 always@(~clk) begin
 				// read 3 second
-if (r < 76000000)  r = r+1;
 
-if ( r == 75555555) begin
-
-	if ( inside4 >= 4) begin
-	
-	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
-	bf4[3*inside4-1] <= 1;
-	bf4[3*inside4-2] <= 1;
-	bf4[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 >= 3) begin
-	
-	readout <= ({bf3[(3*inside4-2)],bf3[(3*inside4-3)]});
-	bf3[3*inside4-1] <= 1;
-	bf3[3*inside4-2] <= 1;
-	bf3[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 < 3 && inside2 >= 2) begin
-	
-	readout <= ({bf2[(3*inside4-2)],bf2[(3*inside4-3)]});
-	bf2[3*inside4-1] <= 1;
-	bf2[3*inside4-2] <= 1;
-	bf2[3*inside4-3] <= 1;
-	
-	end else if (inside4 < 4 && inside3 < 3 && inside2 < 2 ) begin
-	
-	readout <= ({bf1[(3*inside4-2)],bf1[(3*inside4-3)]});
-	bf1[3*inside4-1] <= 1;
-	bf1[3*inside4-2] <= 1;
-	bf1[3*inside4-3] <= 1;
-	
-	end
-r<=0;	
-
-end
 end
 always @(posedge clk25)  // horizontal counter
 		begin 
