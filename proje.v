@@ -1,10 +1,10 @@
-module proje(clk,s1,start,bin0,bin1,registeredbin,bf1,bf2,bf3,bf4,isitstart,b,clk25,o_hsync,o_vsync,color,inside1,inside2,inside3,inside4,readout);
+module proje(clk,sr,start,bin0,bin1,registeredbin,bf1,bf2,bf3,bf4,isitstart,b,clk25,o_hsync,o_vsync,color,inside1,inside2,inside3,inside4,readout);
 
 input clk;
 input start;
 input bin0;
 input bin1;
-input s1;
+input sr;
 output reg [17:0]bf1 =18'b111111111111111111;
 output reg [17:0]bf2 =18'b111111111111111111;
 output reg [17:0]bf3 =18'b111111111111111111;
@@ -62,6 +62,37 @@ reg [3:0]drop32;
 reg [3:0]drop42;
 reg [3:0]dropt1;
 reg [3:0]dropt2;
+reg [6:0]rc1=0;
+reg [6:0]rc2=0;
+reg [6:0]rc3=0;
+reg [6:0]rc4=0;
+reg [6:0]rct=0;
+reg [3:0]rc11=0;
+reg [3:0]rc21=0;
+reg [3:0]rc31=0;
+reg [3:0]rc41=0;
+reg [3:0]rc12=0;
+reg [3:0]rc22=0;
+reg [3:0]rc32=0;
+reg [3:0]rc42=0;
+reg [3:0]rct1=0;
+reg [3:0]rct2=0;
+
+reg [6:0]rcc1=0;
+reg [6:0]rcc2=0;
+reg [6:0]rcc3=0;
+reg [6:0]rcc4=0;
+reg [6:0]rcct=0;
+reg [3:0]rcc11=0;
+reg [3:0]rcc21=0;
+reg [3:0]rcc31=0;
+reg [3:0]rcc41=0;
+reg [3:0]rcc12=0;
+reg [3:0]rcc22=0;
+reg [3:0]rcc32=0;
+reg [3:0]rcc42=0;
+reg [3:0]rcct1=0;
+reg [3:0]rcct2=0;
 output reg [1:0]readout =0;
 reg [32:0] r=0;
 reg cnt;
@@ -114,7 +145,7 @@ reg [3:0] inside2a;
 reg [3:0] inside3a;
 reg [4:0] i =0 ;
 reg e =1;
-reg k;
+reg k=1;
 output reg [1:0] isitstart;
 initial isitstart = 0;
 
@@ -206,7 +237,19 @@ end
 	
 
 
-if(r!=149999999&&k==0)begin
+if(r!=149999999 && k==0)begin
+drop11 <= drop1%10;
+drop12 <= drop1/10;
+drop21 <= drop2%10;
+drop22 <= drop2/10;
+drop31 <= drop3%10;
+drop32 <= drop3/10;
+drop41 <= drop4%10;
+drop42 <= drop4/10;
+dropt<=drop1+drop2+drop3+drop4;
+dropt1<=dropt%10;
+dropt2<=dropt/10;
+
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -240,21 +283,41 @@ if(r!=149999999&&k==0)begin
 
 endcase
 
-drop11 <= drop1%10;
-drop12 <= drop1/10;
-drop21 <= drop2%10;
-drop22 <= drop2/10;
-drop31 <= drop3%10;
-drop32 <= drop3/10;
-drop41 <= drop4%10;
-drop42 <= drop4/10;
-dropt<=drop1+drop2+drop3+drop4;
-dropt1<=dropt%10;
-dropt2<=dropt/10;
+
 
 end
 
-if ( r == 149999999&&s1) begin
+if ( r == 149999999 && sr == 1) begin
+	
+rc11 <= rc1%10;//trans
+rc12 <= rc1/10;
+rc21 <= rc2%10;
+rc22 <= rc2/10;
+rc31 <= rc3%10;
+rc32 <= rc3/10;
+rc41 <= rc4%10;
+rc42 <= rc4/10;
+rct<=rc1+rc2+rc3+rc4;
+rct1<=rct%10;
+rct2<=rct/10;
+
+
+rcc1<=drop1+rc1;
+rcc2<=drop1+rc1;
+rcc3<=drop1+rc1;
+rcc4<=drop1+rc1;
+
+rcc11 <= rcc1%10;//rec
+rcc12 <= rcc1/10;
+rcc21 <= rcc2%10;
+rcc22 <= rcc2/10;
+rcc31 <= rcc3%10;
+rcc32 <= rcc3/10;
+rcc41 <= rcc4%10;
+rcc42 <= rcc4/10;
+rcct<=rcc1+rcc2+rcc3+rcc4;
+rcct1<=rcct%10;
+rcct2<=rcct/10;
 	
 	if ( inside4 >= 3) begin
 	
@@ -264,6 +327,7 @@ if ( r == 149999999&&s1) begin
 	bf4[3*inside4-3] <= 1;
 	e<=0;
 	h<=11;
+	rc4<= rc4+1;
 	end else if ( inside4 < 3 && inside3>=4) begin
 	
 	readout <= ({bf3[(3*inside3-2)],bf3[(3*inside3-3)]});
@@ -272,6 +336,7 @@ if ( r == 149999999&&s1) begin
 	bf3[3*inside3-3] <= 1;
 	e<=0;
 	h<=10;
+	rc3 <= rc3 +1;
 	end else if ( inside4 < 3 && inside3 < 4 && inside2>=5) begin
 	
 	readout <= ({bf2[(3*inside2-2)],bf2[(3*inside2-3)]});
@@ -280,6 +345,7 @@ if ( r == 149999999&&s1) begin
 	bf2[3*inside2-3] <= 1;
 	e<=0;
 	h<=01;
+	rc2 <= rc2+1;
 	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1>=5) begin
 	
 	readout <= ({bf1[(3*inside1-2)],bf1[(3*inside1-3)]});
@@ -288,6 +354,7 @@ if ( r == 149999999&&s1) begin
 	bf1[3*inside1-3] <= 1;
 	e<=0;
 	h<=00;
+	rc1 <= rc1+1;
 	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1>0) begin
 	readout <= ({bf1[(3*inside1-2)],bf1[(3*inside1-3)]});
 	bf1[3*inside1-1] <= 1;
@@ -295,6 +362,7 @@ if ( r == 149999999&&s1) begin
 	bf1[3*inside1-3] <= 1;
 	e<=0;
 	h<=00;
+	rc1 <= rc1+1;
 	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2>0) begin
 	
 	readout <= ({bf2[(3*inside2-2)],bf2[(3*inside2-3)]});
@@ -303,6 +371,7 @@ if ( r == 149999999&&s1) begin
 	bf2[3*inside2-3] <= 1;
 	e<=0;
 	h<=01;
+	rc2 <= rc2+1;
 	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2==0 && inside3>0) begin
 	
 	readout <= ({bf3[(3*inside3-2)],bf3[(3*inside3-3)]});
@@ -311,6 +380,7 @@ if ( r == 149999999&&s1) begin
 	bf3[3*inside3-3] <= 1;
 	e<=0;
 	h<=10;
+	rc3 <= rc3 +1;
 	end else if (inside4 < 3 && inside3 < 4 && inside2<5 && inside1<5 && inside1==0 &&inside2==0 && inside3==0 && inside4 >0) begin
 	
 	readout <= ({bf4[(3*inside4-2)],bf4[(3*inside4-3)]});
@@ -319,6 +389,7 @@ if ( r == 149999999&&s1) begin
 	bf4[3*inside4-3] <= 1;
 	e<=0;
 	h<=11;
+	rc4<= rc4+1;
 	end else if(inside1==0 &&inside2==0 && inside3==0 && inside4 ==0) begin
 	
 	e<=1;
@@ -719,11 +790,11 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 		
 			//stats templete
 			
-			end else if(counter_x>=400&& counter_x<600&& counter_y>=60&& counter_y<110) begin  //transmitted
-			color <= transmitted[(counter_x-400)* 50+(counter_y-60)];
+			end else if(counter_x>=400&& counter_x<600&& counter_y>=60&& counter_y<110) begin  //received
+			color <= received[(counter_x-400)* 50+(counter_y-60)];
 			
-			end else if(counter_x>=400&& counter_x<600&& counter_y>=170&& counter_y<220) begin  //received
-			color <= received[(counter_x-400)* 50+(counter_y-170)];
+			end else if(counter_x>=400&& counter_x<600&& counter_y>=170&& counter_y<220) begin  //transmitted
+			color <= transmitted[(counter_x-400)* 50+(counter_y-170)];
 			
 			end else if(counter_x>=400&& counter_x<600&& counter_y>=280&& counter_y<330) begin  //dropped
 			color <= dropped[(counter_x-400)* 50+(counter_y-280)];
@@ -775,47 +846,631 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 			//
 			
 			
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==0) begin  //dropped
-			color <= zero[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==1) begin  //dropped
-			color <= one[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==2) begin  //dropped
-			color <= two[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==3) begin  //dropped
-			color <= three[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==4) begin  //dropped
-			color <= four[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==5) begin  //dropped
-			color <= five[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==6) begin  //dropped
-			color <= six[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==7) begin  //dropped
-			color <= seven[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==8) begin  //dropped
-			color <= eight[(counter_x-480)* 8+(counter_y-332)];
-			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==9) begin  //dropped
-			color <= nine[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==0) begin  //dropped
+			color <= zero[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==1) begin  //dropped
+			color <= one[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==2) begin  //dropped
+			color <= two[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==3) begin  //dropped
+			color <= three[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==4) begin  //dropped
+			color <= four[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==5) begin  //dropped
+			color <= five[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==6) begin  //dropped
+			color <= six[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==7) begin  //dropped
+			color <= seven[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==8) begin  //dropped
+			color <= eight[(counter_x-475)* 8+(counter_y-332)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=332&& counter_y<340&&drop21==9) begin  //dropped
+			color <= nine[(counter_x-475)* 8+(counter_y-332)];
 			
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==0) begin  //dropped
-			color <= zero[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==1) begin  //dropped
-			color <= one[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==2) begin  //dropped
-			color <= two[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==3) begin  //dropped
-			color <= three[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop12==4) begin  //dropped
-			color <= four[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==5) begin  //dropped
-			color <= five[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==6) begin  //dropped
-			color <= six[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==7) begin  //dropped
-			color <= seven[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==8) begin  //dropped
-			color <= eight[(counter_x-460)* 8+(counter_y-332)];
-			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==9) begin  //dropped
-			color <= nine[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==0) begin  //dropped
+			color <= zero[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==1) begin  //dropped
+			color <= one[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==2) begin  //dropped
+			color <= two[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==3) begin  //dropped
+			color <= three[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==4) begin  //dropped
+			color <= four[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==5) begin  //dropped
+			color <= five[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==6) begin  //dropped
+			color <= six[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==7) begin  //dropped
+			color <= seven[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==8) begin  //dropped
+			color <= eight[(counter_x-455)* 8+(counter_y-332)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=332&& counter_y<340&&drop22==9) begin  //dropped
+			color <= nine[(counter_x-455)* 8+(counter_y-332)];
+			
+			//
+			
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==0) begin  //dropped
+			color <= zero[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==1) begin  //dropped
+			color <= one[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==2) begin  //dropped
+			color <= two[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==3) begin  //dropped
+			color <= three[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==4) begin  //dropped
+			color <= four[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==5) begin  //dropped
+			color <= five[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==6) begin  //dropped
+			color <= six[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==7) begin  //dropped
+			color <= seven[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==8) begin  //dropped
+			color <= eight[(counter_x-520)* 8+(counter_y-332)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=332&& counter_y<340&&drop31==9) begin  //dropped
+			color <= nine[(counter_x-520)* 8+(counter_y-332)];
+			
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==0) begin  //dropped
+			color <= zero[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==1) begin  //dropped
+			color <= one[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==2) begin  //dropped
+			color <= two[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==3) begin  //dropped
+			color <= three[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==4) begin  //dropped
+			color <= four[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==5) begin  //dropped
+			color <= five[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==6) begin  //dropped
+			color <= six[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==7) begin  //dropped
+			color <= seven[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==8) begin  //dropped
+			color <= eight[(counter_x-500)* 8+(counter_y-332)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=332&& counter_y<340&&drop32==9) begin  //dropped
+			color <= nine[(counter_x-500)* 8+(counter_y-332)];
+			
+			//
+			
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==0) begin  //dropped
+			color <= zero[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==1) begin  //dropped
+			color <= one[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==2) begin  //dropped
+			color <= two[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==3) begin  //dropped
+			color <= three[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==4) begin  //dropped
+			color <= four[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==5) begin  //dropped
+			color <= five[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==6) begin  //dropped
+			color <= six[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==7) begin  //dropped
+			color <= seven[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==8) begin  //dropped
+			color <= eight[(counter_x-565)* 8+(counter_y-332)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=332&& counter_y<340&&drop41==9) begin  //dropped
+			color <= nine[(counter_x-565)* 8+(counter_y-332)];
+			
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==0) begin  //dropped
+			color <= zero[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==1) begin  //dropped
+			color <= one[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==2) begin  //dropped
+			color <= two[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==3) begin  //dropped
+			color <= three[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==4) begin  //dropped
+			color <= four[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==5) begin  //dropped
+			color <= five[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==6) begin  //dropped
+			color <= six[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==7) begin  //dropped
+			color <= seven[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==8) begin  //dropped
+			color <= eight[(counter_x-545)* 8+(counter_y-332)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=332&& counter_y<340&&drop42==9) begin  //dropped
+			color <= nine[(counter_x-545)* 8+(counter_y-332)];
+			
+			//
+			
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==0) begin  //dropped
+			color <= zero[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==1) begin  //dropped
+			color <= one[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==2) begin  //dropped
+			color <= two[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==3) begin  //dropped
+			color <= three[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==4) begin  //dropped
+			color <= four[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==5) begin  //dropped
+			color <= five[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==6) begin  //dropped
+			color <= six[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==7) begin  //dropped
+			color <= seven[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==8) begin  //dropped
+			color <= eight[(counter_x-610)* 8+(counter_y-332)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=332&& counter_y<340&&dropt1==9) begin  //dropped
+			color <= nine[(counter_x-610)* 8+(counter_y-332)];
+			
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==0) begin  //dropped
+			color <= zero[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==1) begin  //dropped
+			color <= one[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==2) begin  //dropped
+			color <= two[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==3) begin  //dropped
+			color <= three[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==4) begin  //dropped
+			color <= four[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==5) begin  //dropped
+			color <= five[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==6) begin  //dropped
+			color <= six[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==7) begin  //dropped
+			color <= seven[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==8) begin  //dropped
+			color <= eight[(counter_x-590)* 8+(counter_y-332)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=332&& counter_y<340&&dropt2==9) begin  //dropped
+			color <= nine[(counter_x-590)* 8+(counter_y-332)];
+			
+			
+			//transmitted
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==0) begin  //rcped
+			color <= zero[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==1) begin  //rcped
+			color <= one[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==2) begin  //rcped
+			color <= two[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==3) begin  //rcped
+			color <= three[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==4) begin  //rcped
+			color <= four[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==5) begin  //rcped
+			color <= five[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==6) begin  //rcped
+			color <= six[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==7) begin  //rcped
+			color <= seven[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==8) begin  //rcped
+			color <= eight[(counter_x-430)* 8+(counter_y-222)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=222&& counter_y<230&&rc11==9) begin  //rcped
+			color <= nine[(counter_x-430)* 8+(counter_y-222)];
+			
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==0) begin  //rcped
+			color <= zero[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==1) begin  //rcped
+			color <= one[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==2) begin  //rcped
+			color <= two[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==3) begin  //rcped
+			color <= three[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==4) begin  //rcped
+			color <= four[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==5) begin  //rcped
+			color <= five[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==6) begin  //rcped
+			color <= six[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==7) begin  //rcped
+			color <= seven[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==8) begin  //rcped
+			color <= eight[(counter_x-410)* 8+(counter_y-222)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=222&& counter_y<230&&rc12==9) begin  //rcped
+			color <= nine[(counter_x-410)* 8+(counter_y-222)];
+			
+			
+			
+			//
+			
+			
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==0) begin  //rcped
+			color <= zero[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==1) begin  //rcped
+			color <= one[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==2) begin  //rcped
+			color <= two[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==3) begin  //rcped
+			color <= three[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==4) begin  //rcped
+			color <= four[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==5) begin  //rcped
+			color <= five[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==6) begin  //rcped
+			color <= six[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==7) begin  //rcped
+			color <= seven[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==8) begin  //rcped
+			color <= eight[(counter_x-475)* 8+(counter_y-222)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=222&& counter_y<230&&rc21==9) begin  //rcped
+			color <= nine[(counter_x-475)* 8+(counter_y-222)];
+			
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==0) begin  //rcped
+			color <= zero[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==1) begin  //rcped
+			color <= one[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==2) begin  //rcped
+			color <= two[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==3) begin  //rcped
+			color <= three[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==4) begin  //rcped
+			color <= four[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==5) begin  //rcped
+			color <= five[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==6) begin  //rcped
+			color <= six[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==7) begin  //rcped
+			color <= seven[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==8) begin  //rcped
+			color <= eight[(counter_x-455)* 8+(counter_y-222)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=222&& counter_y<230&&rc22==9) begin  //rcped
+			color <= nine[(counter_x-455)* 8+(counter_y-222)];
+			
+			//
+			
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==0) begin  //rcped
+			color <= zero[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==1) begin  //rcped
+			color <= one[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==2) begin  //rcped
+			color <= two[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==3) begin  //rcped
+			color <= three[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==4) begin  //rcped
+			color <= four[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==5) begin  //rcped
+			color <= five[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==6) begin  //rcped
+			color <= six[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==7) begin  //rcped
+			color <= seven[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==8) begin  //rcped
+			color <= eight[(counter_x-520)* 8+(counter_y-222)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=222&& counter_y<230&&rc31==9) begin  //rcped
+			color <= nine[(counter_x-520)* 8+(counter_y-222)];
+			
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==0) begin  //rcped
+			color <= zero[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==1) begin  //rcped
+			color <= one[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==2) begin  //rcped
+			color <= two[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==3) begin  //rcped
+			color <= three[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==4) begin  //rcped
+			color <= four[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==5) begin  //rcped
+			color <= five[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==6) begin  //rcped
+			color <= six[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==7) begin  //rcped
+			color <= seven[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==8) begin  //rcped
+			color <= eight[(counter_x-500)* 8+(counter_y-222)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=222&& counter_y<230&&rc32==9) begin  //rcped
+			color <= nine[(counter_x-500)* 8+(counter_y-222)];
+			
+			//
+			
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==0) begin  //rcped
+			color <= zero[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==1) begin  //rcped
+			color <= one[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==2) begin  //rcped
+			color <= two[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==3) begin  //rcped
+			color <= three[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==4) begin  //rcped
+			color <= four[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==5) begin  //rcped
+			color <= five[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==6) begin  //rcped
+			color <= six[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==7) begin  //rcped
+			color <= seven[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==8) begin  //rcped
+			color <= eight[(counter_x-565)* 8+(counter_y-222)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=222&& counter_y<230&&rc41==9) begin  //rcped
+			color <= nine[(counter_x-565)* 8+(counter_y-222)];
+			
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==0) begin  //rcped
+			color <= zero[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==1) begin  //rcped
+			color <= one[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==2) begin  //rcped
+			color <= two[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==3) begin  //rcped
+			color <= three[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==4) begin  //rcped
+			color <= four[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==5) begin  //rcped
+			color <= five[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==6) begin  //rcped
+			color <= six[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==7) begin  //rcped
+			color <= seven[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==8) begin  //rcped
+			color <= eight[(counter_x-545)* 8+(counter_y-222)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=222&& counter_y<230&&rc42==9) begin  //rcped
+			color <= nine[(counter_x-545)* 8+(counter_y-222)];
+			
+			//
+			
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==0) begin  //rcped
+			color <= zero[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==1) begin  //rcped
+			color <= one[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==2) begin  //rcped
+			color <= two[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==3) begin  //rcped
+			color <= three[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==4) begin  //rcped
+			color <= four[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==5) begin  //rcped
+			color <= five[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==6) begin  //rcped
+			color <= six[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==7) begin  //rcped
+			color <= seven[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==8) begin  //rcped
+			color <= eight[(counter_x-610)* 8+(counter_y-222)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=222&& counter_y<230&&rct1==9) begin  //rcped
+			color <= nine[(counter_x-610)* 8+(counter_y-222)];
+			
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==0) begin  //rcped
+			color <= zero[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==1) begin  //rcped
+			color <= one[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==2) begin  //rcped
+			color <= two[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==3) begin  //rcped
+			color <= three[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==4) begin  //rcped
+			color <= four[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==5) begin  //rcped
+			color <= five[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==6) begin  //rcped
+			color <= six[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==7) begin  //rcped
+			color <= seven[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==8) begin  //rcped
+			color <= eight[(counter_x-590)* 8+(counter_y-222)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=222&& counter_y<230&&rct2==9) begin  //rcped
+			color <= nine[(counter_x-590)* 8+(counter_y-222)];
+			
+			//receiver
+			
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==0) begin  //rcped
+			color <= zero[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==1) begin  //rcped
+			color <= one[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==2) begin  //rcped
+			color <= two[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==3) begin  //rcped
+			color <= three[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==4) begin  //rcped
+			color <= four[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==5) begin  //rcped
+			color <= five[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==6) begin  //rcped
+			color <= six[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==7) begin  //rcped
+			color <= seven[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==8) begin  //rcped
+			color <= eight[(counter_x-430)* 8+(counter_y-112)];
+			end else if(counter_x>=430&& counter_x<438&& counter_y>=112&& counter_y<120&&rc11==9) begin  //rcped
+			color <= nine[(counter_x-430)* 8+(counter_y-112)];
+			
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==0) begin  //rcped
+			color <= zero[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==1) begin  //rcped
+			color <= one[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==2) begin  //rcped
+			color <= two[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==3) begin  //rcped
+			color <= three[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==4) begin  //rcped
+			color <= four[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==5) begin  //rcped
+			color <= five[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==6) begin  //rcped
+			color <= six[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==7) begin  //rcped
+			color <= seven[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==8) begin  //rcped
+			color <= eight[(counter_x-410)* 8+(counter_y-112)];
+			end else if(counter_x>=410&& counter_x<418&& counter_y>=112&& counter_y<120&&rc12==9) begin  //rcped
+			color <= nine[(counter_x-410)* 8+(counter_y-112)];
+			
+			
+			
+			//
+			
+			
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==0) begin  //rcped
+			color <= zero[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==1) begin  //rcped
+			color <= one[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==2) begin  //rcped
+			color <= two[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==3) begin  //rcped
+			color <= three[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==4) begin  //rcped
+			color <= four[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==5) begin  //rcped
+			color <= five[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==6) begin  //rcped
+			color <= six[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==7) begin  //rcped
+			color <= seven[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==8) begin  //rcped
+			color <= eight[(counter_x-475)* 8+(counter_y-112)];
+			end else if(counter_x>=475&& counter_x<483&& counter_y>=112&& counter_y<120&&rc21==9) begin  //rcped
+			color <= nine[(counter_x-475)* 8+(counter_y-112)];
+			
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==0) begin  //rcped
+			color <= zero[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==1) begin  //rcped
+			color <= one[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==2) begin  //rcped
+			color <= two[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==3) begin  //rcped
+			color <= three[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==4) begin  //rcped
+			color <= four[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==5) begin  //rcped
+			color <= five[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==6) begin  //rcped
+			color <= six[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==7) begin  //rcped
+			color <= seven[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==8) begin  //rcped
+			color <= eight[(counter_x-455)* 8+(counter_y-112)];
+			end else if(counter_x>=455&& counter_x<463&& counter_y>=112&& counter_y<120&&rc22==9) begin  //rcped
+			color <= nine[(counter_x-455)* 8+(counter_y-112)];
+			
+			//
+			
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==0) begin  //rcped
+			color <= zero[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==1) begin  //rcped
+			color <= one[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==2) begin  //rcped
+			color <= two[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==3) begin  //rcped
+			color <= three[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==4) begin  //rcped
+			color <= four[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==5) begin  //rcped
+			color <= five[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==6) begin  //rcped
+			color <= six[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==7) begin  //rcped
+			color <= seven[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==8) begin  //rcped
+			color <= eight[(counter_x-520)* 8+(counter_y-112)];
+			end else if(counter_x>=520&& counter_x<528&& counter_y>=112&& counter_y<120&&rc31==9) begin  //rcped
+			color <= nine[(counter_x-520)* 8+(counter_y-112)];
+			
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==0) begin  //rcped
+			color <= zero[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==1) begin  //rcped
+			color <= one[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==2) begin  //rcped
+			color <= two[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==3) begin  //rcped
+			color <= three[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==4) begin  //rcped
+			color <= four[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==5) begin  //rcped
+			color <= five[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==6) begin  //rcped
+			color <= six[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==7) begin  //rcped
+			color <= seven[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==8) begin  //rcped
+			color <= eight[(counter_x-500)* 8+(counter_y-112)];
+			end else if(counter_x>=500&& counter_x<508&& counter_y>=112&& counter_y<120&&rc32==9) begin  //rcped
+			color <= nine[(counter_x-500)* 8+(counter_y-112)];
+			
+			//
+			
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==0) begin  //rcped
+			color <= zero[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==1) begin  //rcped
+			color <= one[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==2) begin  //rcped
+			color <= two[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==3) begin  //rcped
+			color <= three[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==4) begin  //rcped
+			color <= four[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==5) begin  //rcped
+			color <= five[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==6) begin  //rcped
+			color <= six[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==7) begin  //rcped
+			color <= seven[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==8) begin  //rcped
+			color <= eight[(counter_x-565)* 8+(counter_y-112)];
+			end else if(counter_x>=565&& counter_x<573&& counter_y>=112&& counter_y<120&&rc41==9) begin  //rcped
+			color <= nine[(counter_x-565)* 8+(counter_y-112)];
+			
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==0) begin  //rcped
+			color <= zero[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==1) begin  //rcped
+			color <= one[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==2) begin  //rcped
+			color <= two[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==3) begin  //rcped
+			color <= three[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==4) begin  //rcped
+			color <= four[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==5) begin  //rcped
+			color <= five[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==6) begin  //rcped
+			color <= six[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==7) begin  //rcped
+			color <= seven[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==8) begin  //rcped
+			color <= eight[(counter_x-545)* 8+(counter_y-112)];
+			end else if(counter_x>=545&& counter_x<553&& counter_y>=112&& counter_y<120&&rc42==9) begin  //rcped
+			color <= nine[(counter_x-545)* 8+(counter_y-112)];
+			
+			//
+			
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==0) begin  //rcped
+			color <= zero[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==1) begin  //rcped
+			color <= one[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==2) begin  //rcped
+			color <= two[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==3) begin  //rcped
+			color <= three[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==4) begin  //rcped
+			color <= four[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==5) begin  //rcped
+			color <= five[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==6) begin  //rcped
+			color <= six[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==7) begin  //rcped
+			color <= seven[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==8) begin  //rcped
+			color <= eight[(counter_x-610)* 8+(counter_y-112)];
+			end else if(counter_x>=610&& counter_x<618&& counter_y>=112&& counter_y<120&&rcct1==9) begin  //rcped
+			color <= nine[(counter_x-610)* 8+(counter_y-112)];
+			
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==0) begin  //rcped
+			color <= zero[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==1) begin  //rcped
+			color <= one[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==2) begin  //rcped
+			color <= two[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==3) begin  //rcped
+			color <= three[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==4) begin  //rcped
+			color <= four[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==5) begin  //rcped
+			color <= five[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==6) begin  //rcped
+			color <= six[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==7) begin  //rcped
+			color <= seven[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==8) begin  //rcped
+			color <= eight[(counter_x-590)* 8+(counter_y-112)];
+			end else if(counter_x>=590&& counter_x<598&& counter_y>=112&& counter_y<120&&rcct2==9) begin  //rcped
+			color <= nine[(counter_x-590)* 8+(counter_y-112)];
+			
+			
+			
+			
+			
+			
 			//readout
 			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==0&&e==0) begin  
 			color <= r0[(counter_x-420)* 50+(counter_y-400)];
