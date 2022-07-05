@@ -4,10 +4,10 @@ K3
 cModel Technology
 Z0 dD:\altera\13.1\proje\simulation\qsim
 vproje
-Z1 ITI;]3<m>ITG>Y[<2k:jLe0
+Z1 IY=jBHm;OJ1Zia_Len86Uo1
 Z2 V2GaX]N_jnhCfjDnk@RTQ_2
 Z3 dD:\altera\13.1\proje\simulation\qsim
-Z4 w1656968650
+Z4 w1656985874
 Z5 8proje.vo
 Z6 Fproje.vo
 L0 31
@@ -17,9 +17,9 @@ r1
 Z8 !s90 -work|work|proje.vo|
 Z9 o-work work -O0
 !i10b 1
-Z10 !s100 m]kaIze]nJf:H4f]ECj;60
+Z10 !s100 =56996zjV025>UcmzkiPH0
 !s85 0
-Z11 !s108 1656968650.922000
+Z11 !s108 1656985875.341000
 Z12 !s107 proje.vo|
 !s101 -O0
 vproje_vlg_check_tst
@@ -28,7 +28,7 @@ Z13 !s100 OWm14Lcd4cLZJHi8MDG0C1
 Z14 IRO?i^Y]TB7EB@J2c@6lL@2
 Z15 V<@[R4zo]H9DM0R8B>EFef0
 R3
-Z16 w1656968646
+Z16 w1656985870
 Z17 8Waveform3.vwf.vt
 Z18 FWaveform3.vwf.vt
 L0 63
@@ -36,7 +36,7 @@ R7
 r1
 !s85 0
 31
-Z19 !s108 1656968652.673000
+Z19 !s108 1656985877.312000
 Z20 !s107 Waveform3.vwf.vt|
 Z21 !s90 -work|work|Waveform3.vwf.vt|
 !s101 -O0

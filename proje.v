@@ -114,7 +114,7 @@ reg [3:0] inside2a;
 reg [3:0] inside3a;
 reg [4:0] i =0 ;
 reg e =1;
-
+reg k;
 output reg [1:0] isitstart;
 initial isitstart = 0;
 
@@ -126,8 +126,10 @@ output reg [3:0] registeredbin;
 
 
 always @ (posedge clk) begin
+if (r < 750000000)  r <= r+1;
+if (r==749999999)   r<=0;
 	clk25 = ~clk25;
-
+k<=1;
 inside1=0;
 inside2=0;
 inside3=0;
@@ -165,11 +167,12 @@ for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu b
 		cnt <= 1 ;
 		fourcyc <= fourcyc +1;
 		if(fourcyc == 3) begin
-			registeredbin[3] = dummy[0];
-			registeredbin[2] = dummy[1];
-			registeredbin[1] = dummy[2];
-			registeredbin[0] = dummy[3];
+			registeredbin[3] <= dummy[0];
+			registeredbin[2] <= dummy[1];
+			registeredbin[1] <= dummy[2];
+			registeredbin[0] <= dummy[3];
 			isitstart <= 0 ;
+			k<=0;
 		end 
 		end
 		
@@ -178,11 +181,12 @@ for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu b
 		cnt <= 1 ;
 		fourcyc <= fourcyc +1;
 		if(fourcyc == 3) begin
-			registeredbin[3] = dummy[0];
-			registeredbin[2] = dummy[1];
-			registeredbin[1] = dummy[2];
-			registeredbin[0] = dummy[3];	
+			registeredbin[3] <= dummy[0];
+			registeredbin[2] <= dummy[1];
+			registeredbin[1] <= dummy[2];
+			registeredbin[0] <= dummy[3];	
 			isitstart <= 0;
+			k<=0;
 		end 
 		
 		
@@ -194,17 +198,15 @@ for (i =0 ; i<6 ; i = i+1) begin // o bit 4 değilse doludur kaç dolu var onu b
 		
 end
 
-	if (isitstart == 0) b<=1;
+	//if (isitstart == 0) b<=1;
 // read 3 second
 
 
 
 	
-end
-always @( posedge(b)) begin
-if (r < 9)  r <= r+1;
 
-if(r!=8)begin
+
+if(r!=749999999&&k==0)begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -252,10 +254,7 @@ dropt2<=dropt/10;
 
 end
 
-if ( r == 8) begin
-	inside3a<=inside3+1;
-	inside2a<=inside2+2;
-	inside1a<=inside1+3;
+if ( r == 749999999) begin
 	
 	if ( inside4 >= 3) begin
 	
@@ -326,7 +325,7 @@ if ( r == 8) begin
 	end
 
 	
-r<=0;	
+
 end
 end
 

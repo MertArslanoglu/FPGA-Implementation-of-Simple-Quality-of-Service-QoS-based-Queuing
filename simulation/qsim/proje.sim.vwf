@@ -1773,8 +1773,7 @@ TRANSITION_LIST("bf3[17]")
 		NODE
 		{
 			REPEAT = 1;
-			LEVEL 1 FOR 903.0;
-			LEVEL 0 FOR 97.0;
+			LEVEL 1 FOR 1000.0;
 		}
 	}
 }
@@ -1813,8 +1812,7 @@ TRANSITION_LIST("bf3[14]")
 		NODE
 		{
 			REPEAT = 1;
-			LEVEL 1 FOR 773.0;
-			LEVEL 0 FOR 227.0;
+			LEVEL 1 FOR 1000.0;
 		}
 	}
 }
@@ -1854,7 +1852,9 @@ TRANSITION_LIST("bf3[11]")
 		{
 			REPEAT = 1;
 			LEVEL 1 FOR 663.0;
-			LEVEL 0 FOR 337.0;
+			LEVEL 0 FOR 110.0;
+			LEVEL 1 FOR 130.0;
+			LEVEL 0 FOR 97.0;
 		}
 	}
 }
@@ -4068,7 +4068,9 @@ TRANSITION_LIST("inside3[2]")
 		{
 			REPEAT = 1;
 			LEVEL 0 FOR 665.0;
-			LEVEL 1 FOR 335.0;
+			LEVEL 1 FOR 110.0;
+			LEVEL 0 FOR 130.0;
+			LEVEL 1 FOR 95.0;
 		}
 	}
 }
@@ -4083,8 +4085,9 @@ TRANSITION_LIST("inside3[1]")
 			REPEAT = 1;
 			LEVEL 0 FOR 375.0;
 			LEVEL 1 FOR 290.0;
-			LEVEL 0 FOR 240.0;
-			LEVEL 1 FOR 95.0;
+			LEVEL 0 FOR 110.0;
+			LEVEL 1 FOR 130.0;
+			LEVEL 0 FOR 95.0;
 		}
 	}
 }
@@ -4257,7 +4260,8 @@ TRANSITION_LIST("readout[1]")
 		NODE
 		{
 			REPEAT = 1;
-			LEVEL 0 FOR 1000.0;
+			LEVEL 0 FOR 773.0;
+			LEVEL 1 FOR 227.0;
 		}
 	}
 }
@@ -4270,7 +4274,8 @@ TRANSITION_LIST("readout[0]")
 		NODE
 		{
 			REPEAT = 1;
-			LEVEL 0 FOR 1000.0;
+			LEVEL 0 FOR 773.0;
+			LEVEL 1 FOR 227.0;
 		}
 	}
 }
