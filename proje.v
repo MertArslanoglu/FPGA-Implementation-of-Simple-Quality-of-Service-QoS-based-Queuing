@@ -1,9 +1,10 @@
-module proje(clk,start,bin0,bin1,registeredbin,bf1,bf2,bf3,bf4,isitstart,b,clk25,o_hsync,o_vsync,color,inside1,inside2,inside3,inside4,readout);
+module proje(clk,s1,start,bin0,bin1,registeredbin,bf1,bf2,bf3,bf4,isitstart,b,clk25,o_hsync,o_vsync,color,inside1,inside2,inside3,inside4,readout);
 
 input clk;
 input start;
 input bin0;
 input bin1;
+input s1;
 output reg [17:0]bf1 =18'b111111111111111111;
 output reg [17:0]bf2 =18'b111111111111111111;
 output reg [17:0]bf3 =18'b111111111111111111;
@@ -51,7 +52,6 @@ reg [6:0]drop3;
 reg [6:0]drop4;
 reg [6:0]dropt;
 reg [1:0] h=0;
-
 reg [3:0]drop11;
 reg [3:0]drop21;
 reg [3:0]drop31;
@@ -63,7 +63,7 @@ reg [3:0]drop42;
 reg [3:0]dropt1;
 reg [3:0]dropt2;
 output reg [1:0]readout =0;
-reg [28:0] r=0;
+reg [32:0] r=0;
 reg cnt;
 initial cnt = 0;
 initial begin
@@ -126,8 +126,8 @@ output reg [3:0] registeredbin;
 
 
 always @ (posedge clk) begin
-if (r < 750000000)  r <= r+1;
-if (r==749999999)   r<=0;
+if (r < 150000000)  r <= r+1;
+if (r==149999999)   r<=0;
 	clk25 = ~clk25;
 k<=1;
 inside1=0;
@@ -206,7 +206,7 @@ end
 	
 
 
-if(r!=749999999&&k==0)begin
+if(r!=149999999&&k==0)begin
 	case(registeredbin[3:2]) 
 
 		2'b00: begin
@@ -254,7 +254,7 @@ dropt2<=dropt/10;
 
 end
 
-if ( r == 749999999) begin
+if ( r == 149999999&&s1) begin
 	
 	if ( inside4 >= 3) begin
 	
@@ -728,47 +728,94 @@ assign o_vsync = (counter_y >= 0 && counter_y < 2) ? 1:0;   // vsync high for 2 
 			end else if(counter_x>=400&& counter_x<600&& counter_y>=280&& counter_y<330) begin  //dropped
 			color <= dropped[(counter_x-400)* 50+(counter_y-280)];
 			
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==0) begin  //dropped
-			color <= zero[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==1) begin  //dropped
-			color <= one[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==2) begin  //dropped
-			color <= two[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==3) begin  //dropped
-			color <= three[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==4) begin  //dropped
-			color <= four[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==5) begin  //dropped
-			color <= five[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==6) begin  //dropped
-			color <= six[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==7) begin  //dropped
-			color <= seven[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==8) begin  //dropped
-			color <= eight[(counter_x-440)* 8+(counter_y-332)];
-			end else if(counter_x>=440&& counter_x<448&& counter_y>=332&& counter_y<340&&drop11==9) begin  //dropped
-			color <= nine[(counter_x-440)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==0) begin  //dropped
+			color <= zero[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==1) begin  //dropped
+			color <= one[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==2) begin  //dropped
+			color <= two[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==3) begin  //dropped
+			color <= three[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==4) begin  //dropped
+			color <= four[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==5) begin  //dropped
+			color <= five[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==6) begin  //dropped
+			color <= six[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==7) begin  //dropped
+			color <= seven[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==8) begin  //dropped
+			color <= eight[(counter_x-435)* 8+(counter_y-332)];
+			end else if(counter_x>=435&& counter_x<443&& counter_y>=332&& counter_y<340&&drop11==9) begin  //dropped
+			color <= nine[(counter_x-435)* 8+(counter_y-332)];
 			
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==0) begin  //dropped
-			color <= zero[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==1) begin  //dropped
-			color <= one[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==2) begin  //dropped
-			color <= two[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==3) begin  //dropped
-			color <= three[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==4) begin  //dropped
-			color <= four[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==5) begin  //dropped
-			color <= five[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==6) begin  //dropped
-			color <= six[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==7) begin  //dropped
-			color <= seven[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==8) begin  //dropped
-			color <= eight[(counter_x-420)* 8+(counter_y-332)];
-			end else if(counter_x>=420&& counter_x<428&& counter_y>=332&& counter_y<340&&drop12==9) begin  //dropped
-			color <= nine[(counter_x-420)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==0) begin  //dropped
+			color <= zero[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==1) begin  //dropped
+			color <= one[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==2) begin  //dropped
+			color <= two[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==3) begin  //dropped
+			color <= three[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==4) begin  //dropped
+			color <= four[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==5) begin  //dropped
+			color <= five[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==6) begin  //dropped
+			color <= six[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==7) begin  //dropped
+			color <= seven[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==8) begin  //dropped
+			color <= eight[(counter_x-415)* 8+(counter_y-332)];
+			end else if(counter_x>=415&& counter_x<423&& counter_y>=332&& counter_y<340&&drop12==9) begin  //dropped
+			color <= nine[(counter_x-415)* 8+(counter_y-332)];
+			
+			
+			
+			//
+			
+			
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==0) begin  //dropped
+			color <= zero[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==1) begin  //dropped
+			color <= one[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==2) begin  //dropped
+			color <= two[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==3) begin  //dropped
+			color <= three[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==4) begin  //dropped
+			color <= four[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==5) begin  //dropped
+			color <= five[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==6) begin  //dropped
+			color <= six[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==7) begin  //dropped
+			color <= seven[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==8) begin  //dropped
+			color <= eight[(counter_x-480)* 8+(counter_y-332)];
+			end else if(counter_x>=480&& counter_x<488&& counter_y>=332&& counter_y<340&&drop21==9) begin  //dropped
+			color <= nine[(counter_x-480)* 8+(counter_y-332)];
+			
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==0) begin  //dropped
+			color <= zero[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==1) begin  //dropped
+			color <= one[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==2) begin  //dropped
+			color <= two[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==3) begin  //dropped
+			color <= three[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop12==4) begin  //dropped
+			color <= four[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==5) begin  //dropped
+			color <= five[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==6) begin  //dropped
+			color <= six[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==7) begin  //dropped
+			color <= seven[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==8) begin  //dropped
+			color <= eight[(counter_x-460)* 8+(counter_y-332)];
+			end else if(counter_x>=460&& counter_x<468&& counter_y>=332&& counter_y<340&&drop22==9) begin  //dropped
+			color <= nine[(counter_x-460)* 8+(counter_y-332)];
 			//readout
 			end else if(counter_x>=420&& counter_x<470&& counter_y>=400&& counter_y<450&&readout==0&&h==0&&e==0) begin  
 			color <= r0[(counter_x-420)* 50+(counter_y-400)];
